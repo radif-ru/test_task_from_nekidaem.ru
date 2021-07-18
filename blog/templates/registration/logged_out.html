@@ -1,0 +1,7 @@
+{% extends "userapp/base.html" %}
+
+{% block container %}
+  <p>Logged out!</p>
+
+  <a href="{% url 'login' %}">Кликни сюда, чтобы войти снова.</a>
+{% endblock %}
