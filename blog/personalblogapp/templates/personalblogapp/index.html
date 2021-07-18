@@ -1,0 +1,19 @@
+{% extends 'personalblogapp/base.html' %}
+{% load static %}
+
+{% block container %}
+  {% if request.user.is_authenticated %}
+    Привет, {{ request.user  }}! <a href={%  url 'logout' %}>Выйти</a><br><br>
+
+    {% for post in posts %}
+      {{ post.user }} <br>
+      {{ post.text }} <br>
+      {{ post.created }} <br>
+      {{ post.uodated }} <br>
+      <br>
+    {% endfor %}
+
+  {% else %}
+    Привет, гость! <a href={% url 'login' %}>Тебе нужно авторизоваться</a>
+  {% endif %}
+{% endblock %}

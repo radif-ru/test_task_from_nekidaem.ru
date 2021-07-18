@@ -1,7 +1,7 @@
-{% extends "userapp/base.html" %}
+{% extends "personalblogapp/base.html" %}
 
 {% block container %}
-  <p>Logged out!</p>
+  <p>Вы вышли из системы!</p>
 
-  <a href="{% url 'login' %}">Кликни сюда, чтобы войти снова.</a>
+  <a href="{% url 'login' %}">Кликните сюда, чтобы войти снова.</a>
 {% endblock %}

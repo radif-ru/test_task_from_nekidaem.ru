@@ -1,10 +1,10 @@
 from django.contrib.auth.views import LoginView
 from django.urls import path
 
-from .views import UserHome
+from .views import NewsFeed
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
 
-    path('', UserHome.as_view(), name='user-home'),
+    path('', NewsFeed.as_view(), name='news-feed'),
 ]
