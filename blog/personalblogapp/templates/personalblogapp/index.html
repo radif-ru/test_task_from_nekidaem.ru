@@ -1,16 +1,28 @@
 {% extends 'personalblogapp/base.html' %}
 {% load static %}
+{% load my_tags %}
 
 {% block container %}
   {% if request.user.is_authenticated %}
-    Привет, {{ request.user  }}! <a href={%  url 'logout' %}>Выйти</a><br><br>
+    Привет, {{ request.user }}! <a href={% url 'logout' %}>Выйти</a><br><br>
 
     {% for post in posts %}
-      {{ post.user }} <br>
-      {{ post.text }} <br>
-      {{ post.created }} <br>
-      {{ post.uodated }} <br>
-      <br>
+      {% if post.pk|is_read:request.user.pk == 'прочитан' %}
+        <div class="text-success">
+      {% else %}
+        <div class="text-danger">
+      {% endif %}
+    User: {{ post.user }} <br>
+    Text: {{ post.text }} <br>
+    Create: {{ post.created }} <br>
+    Upd: {{ post.updated }} <br>
+    <form action="{% url 'read-post' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="read" value={{ post.pk }}>
+      <input type="submit" value={{ post.pk|is_read:request.user.pk }}>
+    </form>
+    <br>
+    </div>
     {% endfor %}
 
   {% else %}
