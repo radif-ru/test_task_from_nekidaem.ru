@@ -1,5 +1,7 @@
 {% if request.user.is_authenticated %}
   {% include 'personalblogapp/inc/inc_auth_menu.html' %}
+
+  <h2 class="">Создать пост</h2>
   <form action="" method="post">
   {% csrf_token %}
   {{ form.as_p }}

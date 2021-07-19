@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, UpdateView, CreateView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView
 
 from blog.settings import LOGIN_REDIRECT_URL
 from personalblogapp.forms import ReadPostForm
@@ -50,7 +50,7 @@ class CreatePost(CreateView):
     template_name = 'personalblogapp/create_post.html'
     model = UserPost
     fields = ['title', 'text']
-    success_url = reverse_lazy('news-feed')
+    success_url = reverse_lazy('user-posts')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,3 +62,18 @@ class CreatePost(CreateView):
         fields.user = self.request.user
         fields.save()
         return super().form_valid(form)
+
+
+class UserPosts(ListView):
+    template_name = 'personalblogapp/user_posts.html'
+    model = UserPost
+    context_object_name = 'posts'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'мои посты'
+        return context
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return UserPost.objects.filter(user=self.request.user)

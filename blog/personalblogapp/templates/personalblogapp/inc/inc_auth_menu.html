@@ -4,11 +4,14 @@
 {% block container %}
   <ul>
     <li>Привет, {{ request.user }}!</li>
+    {% if request.resolver_match.url_name != 'user-posts' %}
+      <li><a href="{% url 'user-posts' %}">Мои посты</a></li>
+    {% endif %}
     {% if request.resolver_match.url_name != 'create-post' %}
       <li><a href="{% url 'create-post' %}">Создать пост</a></li>
     {% endif %}
     {% if request.resolver_match.url_name != 'news-feed' %}
-      <li><a href={% url 'news-feed' %}>Домой</a></li>
+      <li><a href={% url 'news-feed' %}>Лента новостей</a></li>
     {% endif %}
     <li><a href={% url 'logout' %}>Выйти</a></li>
   </ul>

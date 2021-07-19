@@ -1,10 +1,11 @@
 {% extends 'personalblogapp/base.html' %}
-{% load static %}
 {% load my_tags %}
 
 {% block container %}
   {% if request.user.is_authenticated %}
     {% include 'personalblogapp/inc/inc_auth_menu.html' %}
+
+    <h2 class="">Лента новостей</h2>
 
     {% for post in posts %}
       {% if post.pk|is_read:request.user.pk == 'прочитан' %}
