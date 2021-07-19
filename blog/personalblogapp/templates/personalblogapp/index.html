@@ -4,7 +4,7 @@
 
 {% block container %}
   {% if request.user.is_authenticated %}
-    Привет, {{ request.user }}! <a href={% url 'logout' %}>Выйти</a><br><br>
+    {% include 'personalblogapp/inc/inc_auth_menu.html' %}
 
     {% for post in posts %}
       {% if post.pk|is_read:request.user.pk == 'прочитан' %}
@@ -26,6 +26,6 @@
     {% endfor %}
 
   {% else %}
-    Привет, гость! <a href={% url 'login' %}>Тебе нужно авторизоваться</a>
+    {% include 'personalblogapp/inc/inc_unauth_menu.html' %}
   {% endif %}
 {% endblock %}

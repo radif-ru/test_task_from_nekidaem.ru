@@ -8,8 +8,8 @@ register = template.Library()
 
 
 @register.filter(name='is_read')
-def is_read(post_pk, request_user_pk):
-    print(post_pk, request_user_pk)
+def is_read(post_pk: int, request_user_pk: int) -> str:
+    """Проверяет прочитан ли пост"""
     try:
         ReadPost.objects.get(
             user_id=request_user_pk,

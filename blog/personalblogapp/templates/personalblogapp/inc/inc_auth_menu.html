@@ -1,0 +1,15 @@
+{% extends 'personalblogapp/base.html' %}
+
+
+{% block container %}
+  <ul>
+    <li>Привет, {{ request.user }}!</li>
+    {% if request.resolver_match.url_name != 'create-post' %}
+      <li><a href="{% url 'create-post' %}">Создать пост</a></li>
+    {% endif %}
+    {% if request.resolver_match.url_name != 'news-feed' %}
+      <li><a href={% url 'news-feed' %}>Домой</a></li>
+    {% endif %}
+    <li><a href={% url 'logout' %}>Выйти</a></li>
+  </ul>
+{% endblock %}

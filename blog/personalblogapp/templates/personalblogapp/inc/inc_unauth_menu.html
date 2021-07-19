@@ -1,0 +1,12 @@
+{% extends 'personalblogapp/base.html' %}
+
+
+{% block container %}
+  <ul>
+    <li>Привет, гость!
+      <a href={% url 'login' %}>Тебе нужно авторизоваться</a>
+    </li>
+  </ul>
+{% endblock %}
+
+

@@ -3,8 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView
 
+from blog.settings import LOGIN_REDIRECT_URL
 from personalblogapp.forms import ReadPostForm
 from personalblogapp.models import UserSubscribeBlog, UserPost, ReadPost
 
@@ -17,19 +18,21 @@ class NewsFeed(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'лента новостей'
-        context['posts'] = self.get_subscriptions()
         return context
 
-    def get_subscriptions(self):
-        subscriptions = self.model.objects.filter(user=self.request.user)
-        return UserPost.objects.filter(
-            user__in=[subscribe.author_blog.pk for subscribe in subscriptions]
-        )
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            subscriptions = self.model.objects.filter(user=self.request.user)
+            return UserPost.objects.filter(
+                user__in=[
+                    subscribe.author_blog.pk for subscribe in subscriptions
+                ]
+            )
 
 
 class ReadPostView(View):
     model = ReadPost
-    success_url = reverse_lazy('personalblogapp/index.html')
+    success_url = reverse_lazy('news-feed')
 
     def post(self, request, *args, **kwargs):
         post_pk = request.POST.get('read', '')
@@ -40,4 +43,22 @@ class ReadPostView(View):
             except ReadPost.DoesNotExist as e:
                 ReadPost.objects.create(
                     user_id=request.user.pk, post_id=post_pk)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(LOGIN_REDIRECT_URL)
+
+
+class CreatePost(CreateView):
+    template_name = 'personalblogapp/create_post.html'
+    model = UserPost
+    fields = ['title', 'text']
+    success_url = reverse_lazy('news-feed')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'создание поста'
+        return context
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.user = self.request.user
+        fields.save()
+        return super().form_valid(form)
