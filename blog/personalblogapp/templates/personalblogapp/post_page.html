@@ -1,0 +1,25 @@
+{% extends 'personalblogapp/base.html' %}
+{% load my_tags %}
+
+{% block container %}
+  {% if request.user.is_authenticated %}
+    {% include 'personalblogapp/inc/inc_auth_menu.html' %}
+
+    <h2 class="">Страница поста</h2>
+
+    User: {{ post.user }} <br>
+    Title: {{ post.title }} <br>
+    Text: {{ post.text }} <br>
+    Create: {{ post.created }} <br>
+    Upd: {{ post.updated }} <br>
+
+    <a href="{% url 'update-post' post.pk %}" class="btn btn-success">
+      Обновить</a>
+    <a href="{% url 'remove-post' post.pk %}" class="btn btn-danger">
+      Удалить</a><br>
+    <br>
+
+  {% else %}
+    {% include 'personalblogapp/inc/inc_unauth_menu.html' %}
+  {% endif %}
+{% endblock %}

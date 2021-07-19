@@ -7,10 +7,12 @@
     <h2 class="">Мои посты</h2>
     {% for post in posts %}
       <div>
-        Title: {{ post.title }} <br>
-        Text: {{ post.text }} <br>
-        Create: {{ post.created }} <br>
-        Upd: {{ post.updated }} <br>
+        <a href="{% url 'post-page' post.pk %}" class="post_link">
+          Title: {{ post.title }} <br>
+          Text: {{ post.text }} <br>
+          Create: {{ post.created }} <br>
+          Upd: {{ post.updated }} <br>
+        </a><br>
         <a href="{% url 'update-post' post.pk %}" class="btn btn-success">
           Обновить пост</a>
         <a href="{% url 'remove-post' post.pk %}" class="btn btn-danger">

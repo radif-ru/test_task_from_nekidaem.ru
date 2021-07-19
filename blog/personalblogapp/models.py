@@ -1,5 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
 from django.db import models
+from django.urls import reverse_lazy
+
+from blog.settings import EMAIL_HOST_USER, DOMAIN_NAME
 
 
 class UserPost(models.Model):
@@ -10,6 +14,29 @@ class UserPost(models.Model):
     text = models.TextField(verbose_name='текст', blank=False)
     created = models.DateTimeField(verbose_name='создан', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
+
+    def save(self, *args, **kwargs):
+        super(UserPost, self).save(*args, **kwargs)
+
+        post_link = reverse_lazy(
+            'post-page',
+            kwargs={
+                'pk': self.id
+            }
+        )
+
+        subscriptions = UserSubscribeBlog.objects.filter(author_blog=self.user)
+        recipient_list = [sub.user.email for sub in subscriptions]
+
+        title = f'У {self.user.username} появился/обновился пост'
+
+        message = f'В блоге пользователя {self.user.username} ' \
+                  f'появился или обновился пост. Смотрите сами:\n' \
+                  f'{DOMAIN_NAME}{post_link}'
+
+        send_mail(
+            title, message, EMAIL_HOST_USER, recipient_list, fail_silently=False
+        )
 
     def __str__(self):
         return f'Автор - {self.user} | ' \

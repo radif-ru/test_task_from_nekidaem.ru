@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, \
     DeleteView
 
-from blog.settings import LOGIN_REDIRECT_URL
+from blog.settings import LOGIN_REDIRECT_URL, DOMAIN_NAME
 from personalblogapp.forms import ReadPostForm
 from personalblogapp.models import UserSubscribeBlog, UserPost, ReadPost
 
@@ -60,7 +60,7 @@ class ReadPosts(View):
             except self.model.DoesNotExist:
                 self.model.objects.create(
                     user_id=request.user.pk, post_id=post_pk)
-        return HttpResponseRedirect(LOGIN_REDIRECT_URL)
+        return HttpResponseRedirect(reverse_lazy('news-feed'))
 
 
 class CreatePost(AutoFieldForUserMixin, CreateView):
@@ -112,7 +112,7 @@ class SubscribeBlog(CreateView):
             except self.model.DoesNotExist:
                 self.model.objects.create(
                     user_id=request.user.pk, author_blog_id=author_blog_pk)
-        return HttpResponseRedirect(LOGIN_REDIRECT_URL)
+        return HttpResponseRedirect(reverse_lazy('news-feed'))
 
     def get_subscribes(self):
         if self.request.user.is_authenticated:
@@ -134,8 +134,15 @@ class UpdatePost(AutoFieldForUserMixin, UpdateView):
 class DeletePost(AutoFieldForUserMixin, DeleteView):
     template_name = 'personalblogapp/delete_post.html'
     model = UserPost
-    fields = ['title', 'text']
     success_url = reverse_lazy('user-posts')
 
 
+class PostPage(DetailView):
+    template_name = 'personalblogapp/post_page.html'
+    model = UserPost
+    context_object_name = 'post'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'страница поста'
+        return context

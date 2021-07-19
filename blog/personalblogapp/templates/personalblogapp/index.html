@@ -13,11 +13,13 @@
       {% else %}
         <div class="text-danger">
       {% endif %}
-    User: {{ post.user }} <br>
-    Title: {{ post.title }} <br>
-    Text: {{ post.text }} <br>
-    Create: {{ post.created }} <br>
-    Upd: {{ post.updated }}
+    <a href="{% url 'post-page' post.pk %}" class="post_link">
+      User: {{ post.user }} <br>
+      Title: {{ post.title }} <br>
+      Text: {{ post.text }} <br>
+      Create: {{ post.created }} <br>
+      Upd: {{ post.updated }}
+    </a>
     <form action="{% url 'read-post' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="read" value={{ post.pk }}>
