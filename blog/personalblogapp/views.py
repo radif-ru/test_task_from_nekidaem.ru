@@ -1,13 +1,30 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import ListView, UpdateView, CreateView, DetailView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView, \
+    DeleteView
 
 from blog.settings import LOGIN_REDIRECT_URL
 from personalblogapp.forms import ReadPostForm
 from personalblogapp.models import UserSubscribeBlog, UserPost, ReadPost
+
+
+class AutoFieldForUserMixin:
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.user = self.request.user
+        fields.save()
+        return super().form_valid(form)
+
+
+class OnlyLoggedUserMixin:
+    @method_decorator(login_required())
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class NewsFeed(ListView):
@@ -46,7 +63,7 @@ class ReadPosts(View):
         return HttpResponseRedirect(LOGIN_REDIRECT_URL)
 
 
-class CreatePost(CreateView):
+class CreatePost(AutoFieldForUserMixin, CreateView):
     template_name = 'personalblogapp/create_post.html'
     model = UserPost
     fields = ['title', 'text']
@@ -56,12 +73,6 @@ class CreatePost(CreateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'создание поста'
         return context
-
-    def form_valid(self, form):
-        fields = form.save(commit=False)
-        fields.user = self.request.user
-        fields.save()
-        return super().form_valid(form)
 
 
 class UserPosts(ListView):
@@ -106,3 +117,25 @@ class SubscribeBlog(CreateView):
     def get_subscribes(self):
         if self.request.user.is_authenticated:
             return self.model.objects.filter(user=self.request.user)
+
+
+class UpdatePost(AutoFieldForUserMixin, UpdateView):
+    template_name = 'personalblogapp/update_post.html'
+    model = UserPost
+    fields = ['title', 'text']
+    success_url = reverse_lazy('user-posts')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'подписаться на блог'
+        return context
+
+
+class DeletePost(AutoFieldForUserMixin, DeleteView):
+    template_name = 'personalblogapp/delete_post.html'
+    model = UserPost
+    fields = ['title', 'text']
+    success_url = reverse_lazy('user-posts')
+
+
+

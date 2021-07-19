@@ -14,16 +14,24 @@
         <div class="text-danger">
       {% endif %}
     User: {{ post.user }} <br>
+    Title: {{ post.title }} <br>
     Text: {{ post.text }} <br>
     Create: {{ post.created }} <br>
-    Upd: {{ post.updated }} <br>
+    Upd: {{ post.updated }}
     <form action="{% url 'read-post' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="read" value={{ post.pk }}>
       <input type="submit" value={{ post.pk|is_read:request.user.pk }}>
     </form>
-    <br>
     </div>
+      {% if post.user == request.user %}
+        Это мой пост
+        <a href="{% url 'update-post' post.pk %}" class="btn btn-success">
+          можно обновить</a>
+        <a href="{% url 'remove-post' post.pk %}" class="btn btn-danger">
+          или удалить</a><br>
+      {% endif %}
+      <br>
     {% endfor %}
 
   {% else %}

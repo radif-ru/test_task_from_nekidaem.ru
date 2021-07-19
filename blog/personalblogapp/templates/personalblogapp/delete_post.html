@@ -1,0 +1,20 @@
+{% extends 'personalblogapp/base.html' %}
+
+{% block container %}
+  {% if request.user.is_authenticated %}
+    {% include 'personalblogapp/inc/inc_auth_menu.html' %}
+
+    <div>
+      <div class="h1">Уверены, что хотите удалить?</div>
+
+      <form method="post">
+        {% csrf_token %}
+        <input class="btn btn-danger" type="submit" value="удалить">
+      </form>
+      <a href="{% url 'user-posts' %}" class="btn btn-success">отмена</a>
+    </div>
+
+  {% else %}
+    {% include 'personalblogapp/inc/inc_unauth_menu.html' %}
+  {% endif %}
+{% endblock %}
