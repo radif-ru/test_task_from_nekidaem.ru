@@ -30,7 +30,7 @@ class NewsFeed(ListView):
             )
 
 
-class ReadPostView(View):
+class ReadPosts(View):
     model = ReadPost
     success_url = reverse_lazy('news-feed')
 
@@ -38,10 +38,10 @@ class ReadPostView(View):
         post_pk = request.POST.get('read', '')
         if post_pk:
             try:
-                ReadPost.objects.get(
+                self.model.objects.get(
                     user_id=request.user, post_id=post_pk).delete()
-            except ReadPost.DoesNotExist as e:
-                ReadPost.objects.create(
+            except self.model.DoesNotExist:
+                self.model.objects.create(
                     user_id=request.user.pk, post_id=post_pk)
         return HttpResponseRedirect(LOGIN_REDIRECT_URL)
 
@@ -76,4 +76,33 @@ class UserPosts(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return UserPost.objects.filter(user=self.request.user)
+            return self.model.objects.filter(user=self.request.user)
+
+
+class SubscribeBlog(CreateView):
+    template_name = 'personalblogapp/subscribe_blog.html'
+    model = UserSubscribeBlog
+    fields = ['author_blog']
+    success_url = reverse_lazy('subscribe-blog')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'подписаться на блог'
+        context['subscribes'] = self.get_subscribes()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        author_blog_pk = request.POST.get('author_blog', '')
+        if author_blog_pk:
+            try:
+                self.model.objects.get(
+                    user_id=request.user, author_blog_id=author_blog_pk
+                ).delete()
+            except self.model.DoesNotExist:
+                self.model.objects.create(
+                    user_id=request.user.pk, author_blog_id=author_blog_pk)
+        return HttpResponseRedirect(LOGIN_REDIRECT_URL)
+
+    def get_subscribes(self):
+        if self.request.user.is_authenticated:
+            return self.model.objects.filter(user=self.request.user)

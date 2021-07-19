@@ -47,7 +47,7 @@ class UserSubscribeBlog(models.Model):
         get_user_model(), verbose_name='пользователь', on_delete=models.CASCADE
     )
     author_blog = models.ForeignKey(
-        get_user_model(), verbose_name='на чей блог подписан',
+        get_user_model(), verbose_name='чей блог',
         on_delete=models.CASCADE, related_name='author_blog'
     )
 

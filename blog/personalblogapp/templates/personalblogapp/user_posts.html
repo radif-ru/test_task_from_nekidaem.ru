@@ -13,6 +13,7 @@
         <br>
       </div>
     {% endfor %}
+    <h3><a href="{% url 'create-post' %}">Создать пост</a></h3>
 
   {% else %}
     {% include 'personalblogapp/inc/inc_unauth_menu.html' %}
