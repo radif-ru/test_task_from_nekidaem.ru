@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-rncy#k(_@h%k-71mc3(*$gd68&2mqe5s=yz!+#zjr7fpgc1znl
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -73,7 +74,7 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# Понятно, что секреты лучше хранить в .env, но для демонстрации тут хардкорно
+# Понятно, что секреты нужно хранить в .env, но для демонстрации тут хардкорно
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -113,9 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -128,11 +129,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -164,3 +165,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # вариант логирования сообщений почты в виде файлов вместо отправки
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/email-messages/'
+
+# Путь до json файлов и дампов бд
+JSON_PATH = 'json'

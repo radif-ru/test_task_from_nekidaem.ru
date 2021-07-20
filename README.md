@@ -3,6 +3,13 @@
 sudo docker-compose build --no-cache
 sudo docker-compose up
 
+В ходе поднятия докера, запускается python manage.py fill_db
+Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha
+Пароль у админа и пользователей qwertytrewq
+Так же происходит автозаполнение таблицы постов с привязкой
+к этим пользователям
+
+
 
 Задание:
 
