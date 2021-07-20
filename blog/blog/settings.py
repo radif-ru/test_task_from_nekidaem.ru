@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-rncy#k(_@h%k-71mc3(*$gd68&2mqe5s=yz!+#zjr7fpgc1znl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'personalblogapp',
+    'psycopg2'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,18 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+# Понятно, что секреты лучше хранить в .env, но для демонстрации тут хардкорно
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'blog_db',
+#         'USER': 'admin',
+#         'PASSWORD': 'qwertytrewq',
+#         'HOST': 'postgresdb',
+#         'PORT': 5432
+#     }
+# }
 
 DATABASES = {
     'default': {
@@ -114,6 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
