@@ -1,15 +1,13 @@
-Запуск проекта:
+Запуск проекта: <br>
+sudo docker-compose build --no-cache <br>
+sudo docker-compose up <br>
 
-sudo docker-compose build --no-cache
-sudo docker-compose up
-
-В ходе поднятия докера, запускается python manage.py fill_db
-Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha
-Пароль у админа и пользователей qwertytrewq
-Так же происходит автозаполнение таблицы постов с привязкой
-к этим пользователям
-
-
+В ходе поднятия докера, запускается python manage.py fill_db <br>
+Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha <br>
+Пароль у админа и пользователей qwertytrewq <br>
+Так же происходит автозаполнение таблицы постов с привязкой <br>
+к этим пользователям <br>
+<br><br>
 
 Задание:
 
