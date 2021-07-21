@@ -1,6 +1,15 @@
 Запуск проекта: <br>
-sudo docker-compose build --no-cache <br>
-sudo docker-compose up <br>
+<br>
+если пользователь не добавлен в группу docker: <br> 
+sudo groupadd docker <br>
+sudo usermod -aG docker username  <br>
+newgrp docker <br>
+<br>
+docker build -t blog . <br>
+
+
+docker-compose build <br>
+docker-compose up <br>
 
 В ходе поднятия докера, запускается python manage.py fill_db <br>
 Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha <br>

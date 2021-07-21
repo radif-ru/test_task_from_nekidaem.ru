@@ -1,7 +1,23 @@
-version: "3"
+version: "3.7"
 
 
 services:
+  blog_db:
+    image: postgres:10.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  blog_web:
+    build: .
+#    command: python /usr/src/blog/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/blog
+    ports:
+      - 8000:8000
+    depends_on:
+      - blog_db
+volumes:
+  postgres_data:
+
 #  postgresdb:
 #    build:
 #      context: ./docker/postgres
@@ -12,16 +28,16 @@ services:
 #      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 #    ports:
 #      - "5432:5432"
-  web:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/usr/src/app
+#  blog_web:
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./:/usr/src/blog
 #    depends_on:
 #      - postgresdb
-    ports:
-      - "8000:8000"
+#    ports:
+#      - "8000:8000"
 #  nginx:
 #    build:
 #      context: ./docker/nginx

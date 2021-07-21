@@ -1,17 +1,16 @@
 FROM python:3.9
 
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove && apt-get autoclean
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-WORKDIR /usr/src/app
-
-RUN chmod ugo+x entrypoint.sh
-
-COPY requirements.txt .
-COPY entrypoint.sh .
+WORKDIR /usr/src/blog
 
 RUN pip install --upgrade pip
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY . /usr/src/blog
+RUN chmod +x /usr/src/blog/entrypoint.sh
 
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENTRYPOINT ["/usr/src/blog/entrypoint.sh"]
+

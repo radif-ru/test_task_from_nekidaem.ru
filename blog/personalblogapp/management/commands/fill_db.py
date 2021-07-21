@@ -22,8 +22,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        os.system('python manage.py makemigrations')
-        os.system('python manage.py migrate --run-syncdb')
+        os.system('python manage.py makemigrations --no-input')
+        os.system('python manage.py migrate --run-syncdb --no-input')
 
         get_user_model().objects.all().delete()
 

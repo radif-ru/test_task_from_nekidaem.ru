@@ -10,7 +10,7 @@ class UserPost(models.Model):
     user = models.ForeignKey(
         get_user_model(), verbose_name='пользователь', on_delete=models.CASCADE
     )
-    title = models.CharField(verbose_name='заголовок', max_length=120)
+    title = models.CharField(verbose_name='заголовок', max_length=50)
     text = models.TextField(verbose_name='текст', blank=False)
     created = models.DateTimeField(verbose_name='создан', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
@@ -40,13 +40,13 @@ class UserPost(models.Model):
 
     def __str__(self):
         return f'Автор - {self.user} | ' \
-               f'Заголовок - {self.title} | ' \
-               f'Текст - {self.text[:15]}...'
+               f'Заголовок - {self.title[:15]} | ' \
+               f'Текст - {self.text[:30]}...'
 
     class Meta:
         verbose_name = 'пост'
         verbose_name_plural = 'посты'
-        ordering = ['-updated', ]
+        ordering = ['-updated']
 
 
 class ReadPost(models.Model):
