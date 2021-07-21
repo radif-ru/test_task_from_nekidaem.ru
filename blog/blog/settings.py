@@ -80,10 +80,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'blog_db',
         'USER': 'radif',
-        # 'USER': 'admin',
         'PASSWORD': 'qwertytrewq',
-        'HOST': 'localhost',
-        # 'HOST': 'postgresdb',
+        'HOST': 'blog_db',
         'PORT': 5432
     }
 }
