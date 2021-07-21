@@ -5,10 +5,11 @@ sudo groupadd docker <br>
 sudo usermod -aG docker username  <br>
 newgrp docker <br>
 <br>
-docker build -t blog . <br>
-
-
+Команды ниже выполнять в каталоге blog - корень Django проекта: <br>
+chmod +x entrypoint.sh - выдаём права на запуск данного скрипта <br>
+Создаём image: <br>
 docker-compose build <br>
+Поднимаем проект на докер-е: <br>
 docker-compose up <br>
 
 В ходе поднятия докера, запускается python manage.py fill_db <br>
