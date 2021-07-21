@@ -6,7 +6,8 @@ sudo usermod -aG docker username  <br>
 newgrp docker <br>
 <br>
 Команды ниже выполнять в каталоге blog - корень Django проекта: <br>
-chmod +x entrypoint.sh - выдаём права на запуск данного скрипта <br>
+Выдаём права на запуск данного скрипта: <br>
+chmod +x entrypoint.sh <br>
 Создаём image: <br>
 docker-compose build <br>
 Поднимаем проект на докер-е: <br>
