@@ -1,7 +1,7 @@
 [
   {
     "model": "personalblogapp.userpost",
-    "pk": 2,
+    "pk": 1,
     "fields": {
       "user": 1,
       "title": "Прежде всего",
@@ -10,7 +10,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 3,
+    "pk": 2,
     "fields": {
       "user": 2,
       "title": "В рамках спецификации ",
@@ -19,7 +19,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 5,
+    "pk": 3,
     "fields": {
       "user": 3,
       "title": "Следует отметить",
@@ -28,7 +28,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 6,
+    "pk": 4,
     "fields": {
       "user": 1,
       "title": "Приятно, граждане",
@@ -37,7 +37,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 7,
+    "pk": 5,
     "fields": {
       "user": 2,
       "title": "Но стремящиеся вытеснить",
@@ -46,7 +46,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 8,
+    "pk": 6,
     "fields": {
       "user": 3,
       "title": "Граница обучения",
@@ -55,7 +55,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 9,
+    "pk": 7,
     "fields": {
       "user": 1,
       "title": "Внезапно, частокол",
@@ -64,7 +64,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 10,
+    "pk": 8,
     "fields": {
       "user": 2,
       "title": "Убеждённость некоторых",
@@ -73,7 +73,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 13,
+    "pk": 9,
     "fields": {
       "user": 3,
       "title": "Добрая половина",
@@ -82,7 +82,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 14,
+    "pk": 10,
     "fields": {
       "user": 1,
       "title": "В провинции никого ",
@@ -91,7 +91,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 15,
+    "pk": 11,
     "fields": {
       "user": 2,
       "title": "Да, преступность никогда",
@@ -100,7 +100,7 @@
   },
   {
     "model": "personalblogapp.userpost",
-    "pk": 17,
+    "pk": 12,
     "fields": {
       "user": 3,
       "title": "Давайте не будем",

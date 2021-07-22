@@ -22,28 +22,31 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        os.system('python manage.py makemigrations --no-input')
-        os.system('python manage.py migrate --run-syncdb --no-input')
+        os.system('python manage.py makemigrations')
+        os.system('python manage.py migrate --run-syncdb')
 
-        get_user_model().objects.all().delete()
+        # get_user_model().objects.all().delete()
 
-        if not get_user_model().objects.filter(username='admin').exists():
+        if not get_user_model().objects.filter(username='radif').exists():
             get_user_model().objects.create_superuser(
                 username='radif',
                 email='mail@radif.ru',
                 password='qwertytrewq')
 
-        if not get_user_model().objects.filter(username='user').exists():
+        if not get_user_model().objects.filter(username='Kolya').exists():
             get_user_model().objects.create_user(
                 username='Kolya',
                 email='kolya@blog.local',
                 password='qwertytrewq')
 
-        if not get_user_model().objects.filter(username='user2').exists():
+        if not get_user_model().objects.filter(username='Alyosha').exists():
             get_user_model().objects.create_user(
                 username='Alyosha',
                 email='alyosha@blog.local',
                 password='qwertytrewq')
+
+        os.system('python manage.py makemigrations personalblogapp')
+        os.system('python manage.py migrate --run-syncdb')
 
         posts = load_from_json('personalblogapp_userpost')
         UserPost.objects.all().delete()
