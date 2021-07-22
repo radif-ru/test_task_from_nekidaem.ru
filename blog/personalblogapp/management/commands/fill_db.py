@@ -22,11 +22,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        os.system('python manage.py makemigrations')
-        os.system('python manage.py migrate --run-syncdb')
-
-        # get_user_model().objects.all().delete()
-
         if not get_user_model().objects.filter(username='radif').exists():
             get_user_model().objects.create_superuser(
                 username='radif',
