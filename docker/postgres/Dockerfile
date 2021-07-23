@@ -1,3 +1,3 @@
-FROM postgres:10.1-alpine
+FROM postgres:12.0-alpine
 
 COPY init.sql /docker-entrypoint-initdb.d

@@ -1,26 +1,74 @@
-Запуск проекта: <br>
-<br>
-если пользователь не добавлен в группу docker: <br> 
-sudo groupadd docker <br>
-sudo usermod -aG docker username  <br>
-newgrp docker <br>
-<br>
-Команды ниже выполнять в каталоге blog - корень Django проекта: <br>
-Выдаём права на запуск данного скрипта: <br>
-chmod +x entrypoint.sh <br>
-Создаём image: <br>
-docker-compose build <br>
-Поднимаем проект на докер-е: <br>
-docker-compose up <br>
+#Запуск проекта:
+### Если пользователь не добавлен в группу docker:  
+> sudo groupadd docker 
+> 
+> sudo usermod -aG docker username 
+> 
+> newgrp docker 
 
-В ходе поднятия докера, запускается python manage.py fill_db <br>
-Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha <br>
-Пароль у админа и пользователей qwertytrewq <br>
-Так же происходит автозаполнение таблицы постов с привязкой <br>
-к этим пользователям <br>
-<br><br>
+### Команды ниже выполнять в каталоге blog - корень Django проекта: 
+#### Выдаём права на запуск данного скрипта: 
+> chmod +x entrypoint.sh 
+#### Создаём образ: 
+> docker-compose build 
+#### Запускаем контейнер:
+>docker-compose up 
 
-Задание:
+В ходе поднятия докера, запускается python manage.py fill_db 
+Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha 
+Пароль у админа и пользователей qwertytrewq 
+Так же происходит автозаполнение таблицы постов с привязкой 
+к этим пользователям
+
+### Запуск миграций: 
+> docker-compose exec web python manage.py flush --no-input 
+>
+> docker-compose exec web python manage.py migrate 
+
+
+### Полезные командны: 
+
+#### Проверка наличия ошибок в журналах  
+> docker-compose logs -f
+#### Зайти в работающий контейнер 
+> docker exec -it CONTAINER ID bash
+#### Проверить, что том (volume) был создан: 
+> docker volume inspect django-on-docker_postgres_data
+#### Удалить тома вместе с контейнерами 
+> docker-compose down -v
+#### Удалить неиспользуемые образы 
+> docker image prune
+#### Удалить неиспользуемые контейнеры 
+> docker container prune
+#### Удалить образ 
+> docker rmi CONTAINER ID `или` docker rmi -f CONTAINER ID
+#### Посмотреть работающие контейнеры 
+> docker ps
+#### Посмотреть все контейнеры 
+> docker ps -a `или` docker container ls
+#### Посмотреть список всех образов 
+> docker images `или` docker image ls
+#### Удалить образы, контейнеры по названию или id
+> docker image rm name_or_id `контейнер` docker container rm name_or_id
+#### Приостановить контейнер 
+> docker stop CONTAINER ID
+#### Запустить ранее остановленный контейнер 
+> docker start CONTAINER ID
+#### Перегрузить контейнер 
+> docker restart CONTAINER ID
+
+> docker-compose up -d --build 
+
+### Вход в postgres: 
+> docker-compose exec db psql --username=admin --dbname=blog_db 
+#### Внутри postgres: 
+#### Показать базы данных: ` # \l `
+#### Подключение к базе данных: ` # \c blog_db ` 
+#### Список зависимостей:  ` # \dt ` 
+#### Выход из postgres  ` # \q `
+
+
+# Задание:
 
 Реализовать бэкенд с минимальным фронтендом (можно на голом HTML):
 
