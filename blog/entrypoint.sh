@@ -19,8 +19,6 @@ python manage.py flush --no-input
 python manage.py migrate
 python manage.py fill_db
 
-npm npm install --prefix ./static ./static
-
 gunicorn blog.wsgi:application -b 0.0.0.0:8000 --reload
 
 #exec "$@"

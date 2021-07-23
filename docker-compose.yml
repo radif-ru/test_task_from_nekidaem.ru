@@ -6,6 +6,8 @@ services:
     build:
       context: ./docker/nodejs
       dockerfile: Dockerfile
+    depends_on:
+      - web
   db:
     build:
       context: ./docker/postgres
@@ -22,11 +24,10 @@ services:
       context: ./blog
       dockerfile: Dockerfile
     volumes:
-#      - ./blog/:/usr/src/blog
+      - ./blog/:/usr/src/blog
       - static/:/usr/src/blog/static
     depends_on:
       - db
-      - nodejs
     ports:
       - "8000:8000"
     env_file:
