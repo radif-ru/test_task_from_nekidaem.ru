@@ -1,6 +1,4 @@
-import re
 from django import template
-from django.conf import settings
 
 from personalblogapp.models import ReadPost
 
