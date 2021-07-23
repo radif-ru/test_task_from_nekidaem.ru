@@ -13,6 +13,5 @@ COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
 COPY . .
-#COPY . /usr/src/blog
 
 ENTRYPOINT ["/usr/src/blog/entrypoint.sh"]
