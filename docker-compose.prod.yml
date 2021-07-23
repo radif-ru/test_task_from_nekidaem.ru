@@ -2,6 +2,10 @@ version: "3.7"
 
 
 services:
+  nodejs:
+    build:
+      context: ./docker/nodejs
+      dockerfile: Dockerfile
   db:
     build:
       context: ./docker/postgres
@@ -12,31 +16,32 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ./.env.prod.db
+      - ./.env.dev.db
   web:
     build:
       context: ./blog
       dockerfile: Dockerfile
-#    volumes:
+    volumes:
 #      - ./blog/:/usr/src/blog
+      - static/:/usr/src/blog/static
     depends_on:
       - db
+      - nodejs
     ports:
       - "8000:8000"
     env_file:
-      - ./.env.prod
+      - ./.env.dev
   nginx:
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
     depends_on:
       - web
-      - db
     ports:
       - "1337:80"
     volumes:
 #      - ./blog/static/:/static
-      - ./blog/static/:/usr/src/blog/static
+      - static/:/usr/src/blog/static
 
 volumes:
   postgres_data:
