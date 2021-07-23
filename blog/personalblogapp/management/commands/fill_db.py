@@ -63,7 +63,7 @@ class Command(BaseCommand):
                                            **post['fields'])
                 new_publication.save()
 
-                self.reset_sequences()
+            self.reset_sequences()
 
     @staticmethod
     def syncdb():
