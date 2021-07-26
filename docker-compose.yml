@@ -1,35 +1,40 @@
 version: "3.7"
 
-
 services:
   nodejs:
     build:
       context: ./docker/nodejs
       dockerfile: Dockerfile
-    depends_on:
-      - web
   db:
     build:
       context: ./docker/postgres
       dockerfile: Dockerfile
     volumes:
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+# init.sql более не нужен, способ регистрации теперь через env_file
+#      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     env_file:
       - ./.env.dev.db
   web:
     build:
       context: ./blog
       dockerfile: Dockerfile
+# Перенёс выполнение команды ниже в entrypoint.sh
+#    command: gunicorn blog.wsgi:application -bind 0.0.0.0:8000 --reload
     volumes:
-      - ./blog/:/usr/src/blog
-      - static/:/usr/src/blog/static
+      - static_volume:/home/app/web/staticfiles/
+      - media_volume:/home/app/web/mediafiles/
     depends_on:
       - db
-    ports:
-      - "8000:8000"
+      - nodejs
+#    ports:
+#      - "8000:8000"
+# Теперь порт 8000 открыт только для других сервисов Docker.
+# И этот порт больше не пробрасывается на хост-машину.
+    expose:
+      - 8000
     env_file:
       - ./.env.dev
   nginx:
@@ -39,11 +44,12 @@ services:
     depends_on:
       - web
     ports:
-      - "1337:80"
+      - "3333:80"
     volumes:
-#      - ./blog/static/:/static
-      - static/:/usr/src/blog/static
+      - static_volume:/home/app/web/staticfiles/
+      - media_volume:/home/app/web/mediafiles/
 
 volumes:
   postgres_data:
-  static:
+  static_volume:
+  media_volume:

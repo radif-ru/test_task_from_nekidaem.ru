@@ -5,7 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # устанавливаем рабочий каталог
-WORKDIR /usr/src/blog
+WORKDIR /home/app/web
 
 RUN pip install --upgrade pip
 
@@ -24,4 +24,4 @@ COPY . .
 
 
 # запуск entrypoint.sh
-ENTRYPOINT ["/usr/src/blog/entrypoint.sh"]
+ENTRYPOINT ["/home/app/web/entrypoint.sh"]

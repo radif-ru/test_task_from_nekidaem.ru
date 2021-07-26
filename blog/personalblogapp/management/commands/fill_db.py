@@ -23,8 +23,10 @@ class Command(BaseCommand):
     help = 'Fill DB new data'
 
     def handle(self, *args, **options):
+        self.migrate()
         self.create_users()
         self.create_posts()
+        self.collect_static()
 
     def create_users(self):
         """Создание супер-юзера, пользователей"""
@@ -66,9 +68,12 @@ class Command(BaseCommand):
             self.reset_sequences()
 
     @staticmethod
+    def migrate():
+        os.system('python manage.py migrate --noinput')
+
+    @staticmethod
     def syncdb():
         """Принудительное создания таблиц, для последующего авто-заполнения"""
-        os.system('python manage.py makemigrations personalblogapp')
         os.system('python manage.py migrate --run-syncdb')
 
     @staticmethod
@@ -79,3 +84,8 @@ class Command(BaseCommand):
         with connection.cursor() as cursor:
             for sql in sequence_sql:
                 cursor.execute(sql)
+
+    @staticmethod
+    def collect_static():
+        """Сборка стандартных и подготовленных статических файлов"""
+        os.system('python manage.py collectstatic --no-input --clear')
