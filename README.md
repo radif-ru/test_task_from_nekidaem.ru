@@ -1,4 +1,5 @@
-#Запуск проекта:
+# Запуск проекта:
+## После запуска доступ, на локальной машине по адресу: http://127.0.0.1:3333
 ### Если пользователь не добавлен в группу docker:  
 > sudo groupadd docker 
 > 
@@ -6,48 +7,53 @@
 > 
 > newgrp docker 
 
-### Команды ниже выполнять в каталоге blog - корень Django проекта: 
-#### Выдаём права на запуск данного скрипта: 
-> chmod +x entrypoint.sh 
-#### Создаём образ: 
+### Запуск prod версии:
+#### Остановить контейнеры: 
+> docker-compose -f docker-compose.prod.yml down -v
+#### Выдать права на запуск данных скриптов: 
+> chmod +x ./blog/entrypoint.sh && chmod +x ./blog/entrypoint.prod.sh
+#### Создать образ и запустить контейнер в фоне:
+> docker-compose -f docker-compose.prod.yml up -d --build
+#### Выполнить миграции
+> docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+#### Сборка стандартных и подготовленных статических файлов 
+> docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
+#### Заполнить таблицы подготовленными данными
+> docker-compose -f docker-compose.prod.yml exec web python manage.py fill_db
+
+ При запуске `python manage.py fill_db` генерируются суперюзер `radif`, 
+ обычные пользователи `Kolya`, `Alyosha`.
+ Пароль у админа и пользователей `qwertytrewq`.
+ Так же происходит автозаполнение таблицы постов с привязкой 
+ к этим пользователям
+
+### Запуск dev версии:
+#### Выдать права на запуск данных скриптов: 
+> chmod +x ./blog/entrypoint.sh && chmod +x ./blog/entrypoint.prod.sh
+#### Собрать образ и запустить контейнер в фоне:
+> docker-compose up -d --build 
+
+
+# Полезные командны: 
+
+#### Создать образ: 
 > docker-compose build 
-#### Запускаем контейнер:
->docker-compose up 
-
-В ходе поднятия докера, запускается python manage.py fill_db 
-Там генерируются суперюзер radif, обычные пользователи Kolya, Alyosha 
-Пароль у админа и пользователей qwertytrewq 
-Так же происходит автозаполнение таблицы постов с привязкой 
-к этим пользователям
-
-### Запуск миграций: 
-> docker-compose exec web python manage.py flush --no-input 
->
-> docker-compose exec web python manage.py migrate 
-
-
-### Полезные командны: 
-
-#### Проверка наличия ошибок в журналах  
+#### Запустить контейнер:
+> docker-compose up
+#### Посмотреть все образы/контейнеры/тома
+> docker image ls && docker container ls && docker volume ls
+#### Удалить неиспользуемые контейнеры/образы/тома
+> docker container prune && docker image prune && docker volume prune
+#### Удалить тома вместе с контейнерами 
+> docker-compose down -v
+#### Проверка наличия ошибок в журналах, просмотр логов
 > docker-compose logs -f
 #### Зайти в работающий контейнер 
 > docker exec -it CONTAINER ID bash
 #### Проверить, что том (volume) был создан: 
 > docker volume inspect django-on-docker_postgres_data
-#### Удалить тома вместе с контейнерами 
-> docker-compose down -v
-#### Удалить неиспользуемые образы 
-> docker image prune
-#### Удалить неиспользуемые контейнеры 
-> docker container prune
 #### Удалить образ 
 > docker rmi CONTAINER ID `или` docker rmi -f CONTAINER ID
-#### Посмотреть работающие контейнеры 
-> docker ps
-#### Посмотреть все контейнеры 
-> docker ps -a `или` docker container ls
-#### Посмотреть список всех образов 
-> docker images `или` docker image ls
 #### Удалить образы, контейнеры по названию или id
 > docker image rm name_or_id `контейнер` docker container rm name_or_id
 #### Приостановить контейнер 
@@ -56,8 +62,18 @@
 > docker start CONTAINER ID
 #### Перегрузить контейнер 
 > docker restart CONTAINER ID
+#### Посмотреть работающие и все контейнеры 
+> docker ps `и` docker ps -a
+#### Посмотреть список всех образов
+> docker images
 
-> docker-compose up -d --build 
+### Работа с django, manage.py:
+#### Очистка таблиц:
+> docker-compose exec web python manage.py flush --no-input 
+#### Создание и запуск миграций:
+> python manage.py makemigrations --no-input
+> 
+> docker-compose exec web python manage.py migrate 
 
 ### Вход в postgres: 
 > docker-compose exec db psql --username=admin --dbname=blog_db 
