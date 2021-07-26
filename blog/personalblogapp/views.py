@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -24,7 +25,7 @@ class OnlyLoggedUserMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class NewsFeed(ListView):
+class NewsFeed(OnlyLoggedUserMixin, ListView):
     template_name = 'personalblogapp/index.html'
     model = UserSubscribeBlog
     context_object_name = 'posts'
@@ -44,7 +45,7 @@ class NewsFeed(ListView):
             )
 
 
-class ReadPosts(View):
+class ReadPosts(OnlyLoggedUserMixin, View):
     model = ReadPost
     success_url = reverse_lazy('news-feed')
 
@@ -60,7 +61,7 @@ class ReadPosts(View):
         return HttpResponseRedirect(reverse_lazy('news-feed'))
 
 
-class CreatePost(AutoFieldForUserMixin, CreateView):
+class CreatePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, CreateView):
     template_name = 'personalblogapp/create_post.html'
     model = UserPost
     fields = ['title', 'text']
@@ -72,7 +73,7 @@ class CreatePost(AutoFieldForUserMixin, CreateView):
         return context
 
 
-class UserPosts(ListView):
+class UserPosts(OnlyLoggedUserMixin, ListView):
     template_name = 'personalblogapp/user_posts.html'
     model = UserPost
     context_object_name = 'posts'
@@ -87,7 +88,7 @@ class UserPosts(ListView):
             return self.model.objects.filter(user=self.request.user)
 
 
-class SubscribeBlog(CreateView):
+class SubscribeBlog(OnlyLoggedUserMixin, CreateView):
     template_name = 'personalblogapp/subscribe_blog.html'
     model = UserSubscribeBlog
     fields = ['author_blog']
@@ -109,14 +110,14 @@ class SubscribeBlog(CreateView):
             except self.model.DoesNotExist:
                 self.model.objects.create(
                     user_id=request.user.pk, author_blog_id=author_blog_pk)
-        return HttpResponseRedirect(reverse_lazy('news-feed'))
+        return HttpResponseRedirect(reverse_lazy('subscribe-blog'))
 
     def get_subscribes(self):
         if self.request.user.is_authenticated:
             return self.model.objects.filter(user=self.request.user)
 
 
-class UpdatePost(AutoFieldForUserMixin, UpdateView):
+class UpdatePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, UpdateView):
     template_name = 'personalblogapp/update_post.html'
     model = UserPost
     fields = ['title', 'text']
@@ -128,13 +129,13 @@ class UpdatePost(AutoFieldForUserMixin, UpdateView):
         return context
 
 
-class DeletePost(AutoFieldForUserMixin, DeleteView):
+class DeletePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, DeleteView):
     template_name = 'personalblogapp/delete_post.html'
     model = UserPost
     success_url = reverse_lazy('user-posts')
 
 
-class PostPage(DetailView):
+class PostPage(OnlyLoggedUserMixin, DetailView):
     template_name = 'personalblogapp/post_page.html'
     model = UserPost
     context_object_name = 'post'

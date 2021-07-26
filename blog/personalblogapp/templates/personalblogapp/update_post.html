@@ -1,7 +1,7 @@
 {% extends 'personalblogapp/base.html' %}
 
 {% block container %}
-  {% if request.user.is_authenticated %}
+
     {% include 'personalblogapp/inc/inc_auth_menu.html' %}
 
     <h2 class="">Обновить пост</h2>
@@ -11,7 +11,4 @@
       <input type="submit" value="Обновить"/>
     </form>
 
-  {% else %}
-    {% include 'personalblogapp/inc/inc_unauth_menu.html' %}
-  {% endif %}
 {% endblock %}

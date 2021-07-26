@@ -1,7 +1,7 @@
 {% extends 'personalblogapp/base.html' %}
 
 {% block container %}
-  {% if request.user.is_authenticated %}
+
     {% include 'personalblogapp/inc/inc_auth_menu.html' %}
 
     <div>
@@ -14,7 +14,4 @@
       <a href="{% url 'user-posts' %}" class="btn btn-success">отмена</a>
     </div>
 
-  {% else %}
-    {% include 'personalblogapp/inc/inc_unauth_menu.html' %}
-  {% endif %}
 {% endblock %}

@@ -13,5 +13,5 @@ def is_read(post_pk: int, request_user_pk: int) -> str:
             user_id=request_user_pk,
             post_id=post_pk)
         return 'прочитан'
-    except ReadPost.DoesNotExist as e:
+    except ReadPost.DoesNotExist:
         return 'не_прочитан'
