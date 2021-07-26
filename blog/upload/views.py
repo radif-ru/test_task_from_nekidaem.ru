@@ -1,7 +1,7 @@
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import TemplateView
 
-from personalblogapp.views import OnlyLoggedUserMixin
+from personal_blog.views import OnlyLoggedUserMixin
 
 
 class UploadFile(OnlyLoggedUserMixin, TemplateView):

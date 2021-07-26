@@ -107,9 +107,3 @@ Python 3.x, Django > 3.х, Postgresql или SQLite.
 Проект необходимо упаковать в докер. Запускать через docker-compose.
 
 В проекте должно быть README с описанием запуска проекта.
-
-Срок выполнения 1-2 дня.
-
-Результат выложить на github или bitbucket и прислать ссылку на info@nekidaem.ru.
-
-https://docs.google.com/document/d/1oS2m4lLskCUQCUpPqzwcS8mcPCAvlBLqUM6u-cHc_38/edit#heading=h.ynpjfxumehs

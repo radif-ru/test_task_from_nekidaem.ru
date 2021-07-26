@@ -7,7 +7,7 @@ from django.core.management.color import no_style
 from django.db import connection
 
 from blog.settings import JSON_PATH
-from personalblogapp.models import UserPost
+from personal_blog.models import UserPost
 
 
 def load_from_json(file_name: str) -> dict:

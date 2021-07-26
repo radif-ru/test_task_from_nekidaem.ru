@@ -1,6 +1,18 @@
 # IntellijIdea files
 **/.idea
 
+# Собранные с помощью collect_static статические файлы
+**/staticfiles/
+
+**/mediafiles/
+
+# Переменные окружения, секреты
+#**/.env
+#**/.env.dev
+#**/.env.def.db
+#**/.env.prod
+#**/.env.prod.db
+
 # Нод модули во всех каталогах
 **/node_modules
 
@@ -25,12 +37,11 @@
 # Миграции
 **/migrations
 
-# Переменные окружения, секреты
-#**/.env
-#**/.env.dev
-#**/.env.def.db
-#**/.env.prod
-#**/.env.prod.db
+# Логи от Silenium
+**/geckodriver.log
+
+# Локальные файлы, использовались для секретов, но теперь они вне проекта
+**/local__*
 
 # Виртуальное окружение проекта
 **/env
@@ -42,9 +53,3 @@
 **/venv38
 **/venv_3_9
 **/venv39
-
-# Логи от Silenium
-**/geckodriver.log
-
-# Локальные файлы, использовались для секретов, но теперь они вне проекта
-**/local__*

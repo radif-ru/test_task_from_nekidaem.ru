@@ -1,14 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import ListView, UpdateView, CreateView, DetailView, \
-    DeleteView
+from django.views.generic import ListView, UpdateView, CreateView, \
+    DetailView, DeleteView
 
-from personalblogapp.models import UserSubscribeBlog, UserPost, ReadPost
+from personal_blog.models import UserSubscribeBlog, UserPost, ReadPost
 
 
 class AutoFieldForUserMixin:
@@ -47,7 +46,6 @@ class NewsFeed(OnlyLoggedUserMixin, ListView):
 
 class ReadPosts(OnlyLoggedUserMixin, View):
     model = ReadPost
-    success_url = reverse_lazy('news-feed')
 
     def post(self, request, *args, **kwargs):
         post_pk = request.POST.get('read', '')
@@ -92,7 +90,6 @@ class SubscribeBlog(OnlyLoggedUserMixin, CreateView):
     template_name = 'personalblogapp/subscribe_blog.html'
     model = UserSubscribeBlog
     fields = ['author_blog']
-    success_url = reverse_lazy('subscribe-blog')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

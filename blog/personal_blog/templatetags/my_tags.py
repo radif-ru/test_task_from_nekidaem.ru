@@ -1,6 +1,6 @@
 from django import template
 
-from personalblogapp.models import ReadPost
+from personal_blog.models import ReadPost
 
 register = template.Library()
 

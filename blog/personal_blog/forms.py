@@ -1,6 +1,6 @@
 from django import forms
 
-from personalblogapp.models import ReadPost
+from personal_blog.models import ReadPost
 
 
 class FormControlMixin:
@@ -13,5 +13,4 @@ class FormControlMixin:
 class ReadPostForm(FormControlMixin, forms.ModelForm):
     class Meta:
         model = ReadPost
-        # exclude = ('user',)
         fields = '__all__'
