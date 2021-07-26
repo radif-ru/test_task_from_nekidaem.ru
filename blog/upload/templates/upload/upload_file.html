@@ -1,0 +1,22 @@
+{% extends 'personalblogapp/base.html' %}
+
+{% block container %}
+
+  {% include 'personalblogapp/inc/inc_auth_menu.html' %}
+
+    <h2 class="">Загрузить файл</h2>
+
+    <form action="{% url "upload" %}" method="post"
+          enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="image_file">
+      <input type="submit" value="загрузить"/>
+    </form>
+
+    {% if image_url %}
+      <p>Файл, загруженный по адресу:
+        <a target="_blank" href="{{ image_url }}">{{ image_url }}</a>
+      </p>
+    {% endif %}
+
+{% endblock %}
