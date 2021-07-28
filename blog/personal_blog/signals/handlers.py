@@ -7,13 +7,14 @@ from blog.settings import DOMAIN_NAME, EMAIL_HOST_USER
 from personal_blog.models import UserPost, UserSubscribeBlog
 
 
-@receiver(post_save, sender=UserPost)
-def forwarding_to_save(sender, instance, **kwargs):
-    email_sender(instance, 'появился/обновился')
+@receiver(post_save, sender=UserPost, dispatch_uid='email_sender_create')
+def forwarding_to_save(instance, created, **kwargs):
+    if created:
+        email_sender(instance, 'появился')
 
 
-@receiver(pre_delete, sender=UserPost)
-def forwarding_to_delete(sender, instance, **kwargs):
+@receiver(pre_delete, sender=UserPost, dispatch_uid='email_sender_delete')
+def forwarding_to_delete(instance, **kwargs):
     email_sender(instance, 'удалён')
 
 
@@ -30,10 +31,13 @@ def email_sender(instance, text):
             author_blog=instance.user)
         recipient_list = [sub.user.email for sub in subscriptions]
 
-        title = f'У {instance.user.username} {text} пост'
+        title = f'У {instance.user.username} {text} пост {instance.title}'
 
-        message = f'В блоге пользователя {instance.user.username} ' \
-                  f'{text} пост. Смотрите сами:\n' \
+        message = f'В блоге пользователя "{instance.user.username}" {text} ' \
+                  f'пост. \n\nНазвание - "{instance.title}"\n\n' \
+                  f'Текст:\n' \
+                  f'"{instance.text}"\n\n' \
+                  f'Ссылка:\n' \
                   f'{DOMAIN_NAME}{post_link}'
 
         send_mail(
