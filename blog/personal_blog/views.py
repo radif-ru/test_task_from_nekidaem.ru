@@ -25,7 +25,7 @@ class OnlyLoggedUserMixin:
 
 
 class NewsFeed(OnlyLoggedUserMixin, ListView):
-    template_name = 'personalblogapp/index.html'
+    template_name = 'personal_blog/index.html'
     model = UserSubscribeBlog
     context_object_name = 'posts'
 
@@ -60,7 +60,7 @@ class ReadPosts(OnlyLoggedUserMixin, View):
 
 
 class CreatePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, CreateView):
-    template_name = 'personalblogapp/create_post.html'
+    template_name = 'personal_blog/create_post.html'
     model = UserPost
     fields = ['title', 'text']
     success_url = reverse_lazy('user-posts')
@@ -72,7 +72,7 @@ class CreatePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, CreateView):
 
 
 class UserPosts(OnlyLoggedUserMixin, ListView):
-    template_name = 'personalblogapp/user_posts.html'
+    template_name = 'personal_blog/user_posts.html'
     model = UserPost
     context_object_name = 'posts'
 
@@ -87,7 +87,7 @@ class UserPosts(OnlyLoggedUserMixin, ListView):
 
 
 class SubscribeBlog(OnlyLoggedUserMixin, CreateView):
-    template_name = 'personalblogapp/subscribe_blog.html'
+    template_name = 'personal_blog/subscribe_blog.html'
     model = UserSubscribeBlog
     fields = ['author_blog']
 
@@ -115,7 +115,7 @@ class SubscribeBlog(OnlyLoggedUserMixin, CreateView):
 
 
 class UpdatePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, UpdateView):
-    template_name = 'personalblogapp/update_post.html'
+    template_name = 'personal_blog/update_post.html'
     model = UserPost
     fields = ['title', 'text']
     success_url = reverse_lazy('user-posts')
@@ -127,13 +127,13 @@ class UpdatePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, UpdateView):
 
 
 class DeletePost(OnlyLoggedUserMixin, AutoFieldForUserMixin, DeleteView):
-    template_name = 'personalblogapp/delete_post.html'
+    template_name = 'personal_blog/delete_post.html'
     model = UserPost
     success_url = reverse_lazy('user-posts')
 
 
 class PostPage(OnlyLoggedUserMixin, DetailView):
-    template_name = 'personalblogapp/post_page.html'
+    template_name = 'personal_blog/post_page.html'
     model = UserPost
     context_object_name = 'post'
 
