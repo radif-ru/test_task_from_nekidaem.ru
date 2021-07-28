@@ -23,30 +23,34 @@ class Command(BaseCommand):
     help = 'Fill DB new data'
 
     def handle(self, *args, **options):
-        self.migrate()
         self.create_users()
         self.create_posts()
-        self.collect_static()
 
     def create_users(self):
         """Создание супер-юзера, пользователей"""
-        if not get_user_model().objects.exists():
-            get_user_model().objects.create_superuser(
-                username='radif',
-                email='mail@radif.ru',
-                password='qwertytrewq')
+        self.migrate()
+        try:
+            if not get_user_model().objects.exists():
+                self.migrate()
+                get_user_model().objects.create_superuser(
+                    username='radif',
+                    email='mail@radif.ru',
+                    password='qwertytrewq')
 
-            get_user_model().objects.create_user(
-                username='Kolya',
-                email='kolya@blog.local',
-                password='qwertytrewq')
+                get_user_model().objects.create_user(
+                    username='Kolya',
+                    email='kolya@blog.local',
+                    password='qwertytrewq')
 
-            get_user_model().objects.create_user(
-                username='Alyosha',
-                email='alyosha@blog.local',
-                password='qwertytrewq')
+                get_user_model().objects.create_user(
+                    username='Alyosha',
+                    email='alyosha@blog.local',
+                    password='qwertytrewq')
 
-            self.syncdb()
+                self.syncdb()
+        except Exception as e:
+            print(e)
+            self.create_users()
 
     def create_posts(self):
         """ Создание постов
@@ -66,6 +70,7 @@ class Command(BaseCommand):
                 new_publication.save()
 
             self.reset_sequences()
+            self.collect_static()
 
     @staticmethod
     def migrate():
