@@ -1,7 +1,11 @@
 FROM node:16-alpine
 
-WORKDIR /usr/src/app/static
+ARG STATIC
 
-COPY ./package.json .
+WORKDIR $STATIC
 
-CMD ["npm", "install"]
+COPY . $STATIC
+
+RUN npm install
+
+RUN chmod +rwx -R $STATIC
