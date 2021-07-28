@@ -1,7 +1,10 @@
 # Запуск проекта:
 ## После запуска доступ на локальной машине по адресу и порту: http://127.0.0.1:3333
 ## Почтовые уведомления о сохранении, удалении постов, на которые подписан пользователь, грузятся в: tmp/email-messages
-### Если пользователь не добавлен в группу docker:  
+## При запуске `production`-версии включается более защищённый режим, отключается режим дебага, код грузится, только если проходит проверку на flake8, работа в режиме пользователя, а не root
+## Для быстрой отладки, проверки кода лучше использовать `development`-версию
+
+### Если пользователь не добавлен в группу docker:
 > sudo groupadd docker 
 > 
 > sudo usermod -aG docker username 
@@ -17,7 +20,7 @@
 > docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
 #### 4. Сборка стандартных и подготовленных статических файлов 
 > docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
-#### 5. Заполнить таблицы подготовленными данными. 3-4 можно пропустить, сразу запустить этот пункт
+#### 5. Заполнить таблицы подготовленными данными. `3-4` можно пропустить - сразу запустить этот пункт
 > docker-compose -f docker-compose.prod.yml exec web python manage.py fill_db
 
  При запуске `python manage.py fill_db` генерируются суперюзер `radif`, 
@@ -29,7 +32,7 @@
 ### Запуск dev версии:
 #### Выдать права на запуск данных скриптов: 
 > chmod +x ./blog/entrypoint.sh && chmod +x ./blog/entrypoint.prod.sh
-#### Собрать образ и запустить контейнер в фоне, включён запуск fill_db:
+#### Собрать образ и запустить контейнер в фоне, включён запуск `fill_db`:
 > docker-compose up -d --build 
 
 
@@ -53,7 +56,7 @@
 #### Проверить, что том (volume) был создан: 
 > docker volume inspect django-on-docker_postgres_data
 #### Удалить образ 
-> docker rmi CONTAINER ID `или` docker rmi -f CONTAINER ID
+> `docker rmi CONTAINER ID`, `docker rmi -f CONTAINER ID`
 #### Удалить образы, контейнеры, тома по названию или id
 > `docker image rm name_or_id`, `docker container rm name_or_id`, `docker volume rm name_or_id`
 #### Приостановить контейнер 
@@ -63,7 +66,7 @@
 #### Перегрузить контейнер 
 > docker restart CONTAINER ID
 #### Посмотреть работающие и все контейнеры 
-> docker ps `и` docker ps -a
+> `docker ps`, `docker ps -a`
 #### Посмотреть список всех образов
 > docker images
 
