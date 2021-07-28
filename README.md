@@ -1,5 +1,6 @@
 # Запуск проекта:
 ## После запуска доступ на локальной машине по адресу и порту: http://127.0.0.1:3333
+## Почтовые уведомления о сохранении, удалении постов, на которые подписан пользователь, грузятся в: tmp/email-messages
 ### Если пользователь не добавлен в группу docker:  
 > sudo groupadd docker 
 > 
@@ -8,44 +9,43 @@
 > newgrp docker 
 
 ### Запуск prod версии:
-#### Остановить контейнеры: 
-> docker-compose -f docker-compose.prod.yml down -v
-#### Выдать права на запуск данных скриптов: 
+#### 1. Выдать права на запуск данных скриптов: 
 > chmod +x ./blog/entrypoint.sh && chmod +x ./blog/entrypoint.prod.sh
-#### Создать образ и запустить контейнер в фоне:
+#### 2. Создать образ и запустить контейнер в фоне:
 > docker-compose -f docker-compose.prod.yml up -d --build
-#### Выполнить миграции
+#### 3. Выполнить миграции
 > docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
-#### Сборка стандартных и подготовленных статических файлов 
+#### 4. Сборка стандартных и подготовленных статических файлов 
 > docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
-#### Заполнить таблицы подготовленными данными
+#### 5. Заполнить таблицы подготовленными данными. 3-4 можно пропустить, сразу запустить этот пункт
 > docker-compose -f docker-compose.prod.yml exec web python manage.py fill_db
 
  При запуске `python manage.py fill_db` генерируются суперюзер `radif`, 
  обычные пользователи `Kolya`, `Alyosha`.
  Пароль у админа и пользователей `qwertytrewq`.
- Так же происходит автозаполнение таблицы постов с привязкой 
- к этим пользователям
+ Так же происходит автозаполнение таблицы постов с привязкой к этим 
+ пользователям
 
 ### Запуск dev версии:
 #### Выдать права на запуск данных скриптов: 
 > chmod +x ./blog/entrypoint.sh && chmod +x ./blog/entrypoint.prod.sh
-#### Собрать образ и запустить контейнер в фоне:
+#### Собрать образ и запустить контейнер в фоне, включён запуск fill_db:
 > docker-compose up -d --build 
 
 
-# Полезные командны: 
+# Другие полезные командны: 
 
 #### Создать образ: 
 > docker-compose build 
 #### Запустить контейнер:
 > docker-compose up
 #### Посмотреть все образы/контейнеры/тома
-> docker image ls && docker container ls && docker volume ls
+> docker image ls -a && docker container ls -a && docker volume ls
 #### Удалить неиспользуемые контейнеры/образы/тома
 > docker container prune && docker image prune && docker volume prune
 #### Удалить тома вместе с контейнерами 
 > docker-compose down -v
+> docker-compose -f docker-compose.prod.yml down -v
 #### Проверка наличия ошибок в журналах, просмотр логов
 > docker-compose logs -f
 #### Зайти в работающий контейнер 
@@ -54,8 +54,8 @@
 > docker volume inspect django-on-docker_postgres_data
 #### Удалить образ 
 > docker rmi CONTAINER ID `или` docker rmi -f CONTAINER ID
-#### Удалить образы, контейнеры по названию или id
-> docker image rm name_or_id `контейнер` docker container rm name_or_id
+#### Удалить образы, контейнеры, тома по названию или id
+> `docker image rm name_or_id`, `docker container rm name_or_id`, `docker volume rm name_or_id`
 #### Приостановить контейнер 
 > docker stop CONTAINER ID
 #### Запустить ранее остановленный контейнер 
@@ -71,7 +71,7 @@
 #### Очистка таблиц:
 > docker-compose exec web python manage.py flush --no-input 
 #### Создание и запуск миграций:
-> python manage.py makemigrations --no-input
+> docker-compose exec web python manage.py makemigrations --no-input
 > 
 > docker-compose exec web python manage.py migrate 
 
